@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "name": {
+      "en": "Sustainable Fabric Bag",
+      "ar": "حقيبة قماش مستدامة"
+    },
+    "description": {
+      "en": "Made from 100% recycled textile waste.",
+      "ar": "مصنوعة من نفايات نسيجية معاد تدويرها 100%."
+    },
+    "price": 599,
+    "category": "bags",
+    "image": "images/product1.png"
+  },
+  {
+    "id": 2,
+    "name": {
+      "en": "Minimalist Fabric Bag",
+      "ar": "حقيبة قماش بسيطة"
+    },
+    "description": {
+      "en": "Durable, everyday bag made from sustainable materials.",
+      "ar": "حقيبة يومية متينة مصنوعة من مواد مستدامة."
+    },
+    "price": 499,
+    "category": "bags",
+    "image": "images/product2.png"
+  },
+  {
+    "id": 3,
+    "name": {
+      "en": "Raw Fabric Pieces",
+      "ar": "قطع قماش خام"
+    },
+    "description": {
+      "en": "Assorted recycled fabric pieces for your own crafts.",
+      "ar": "قطع قماش متنوعة معاد تدويرها لأعمالك اليدوية."
+    },
+    "price": 299,
+    "category": "materials",
+    "image": "images/product3.jpg"
+  },
+  {
+    "id": 4,
+    "name": {
+      "en": "MDF Board",
+      "ar": "خشب MDF"
+    },
+    "description": {
+      "en": "High-quality MDF board crafted from recycled fabric fibers — durable, eco-friendly, and versatile.",
+      "ar": "لوح MDF عالي الجودة مصنوع من ألياف قماش معاد تدويرها — متين، صديق للبيئة، ومتعدد الاستخدامات."
+    },
+    "price": 850,
+    "category": "mdf",
+    "image": "images/product_mdf.jpg.jpg"
+  },
+  {
+    "id": 5,
+    "name": {
+      "en": "Handmade Seashell Tote Bag",
+      "ar": "شنطة توت هاند ميد بالأصداف"
+    },
+    "description": {
+      "en": "A unique handmade tote bag decorated with real seashells and lace trim — lovingly crafted by our trained women as part of the FAB-REC empowerment program. 100% Egyptian handmade.",
+      "ar": "شنطة توت فريدة مصنوعة يدوياً ومزيّنة بأصداف بحرية طبيعية ودانتيل — صنعتها سيداتنا المتدربات ضمن برنامج تمكين FAB-REC. صناعة مصرية 100% هاند ميد."
+    },
+    "price": 650,
+    "category": "bags",
+    "image": "images/product_handmade_bag.jpg.png"
+  }
+]

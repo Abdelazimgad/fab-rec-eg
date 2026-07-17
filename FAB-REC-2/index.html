@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FAB-REC transforms textile waste into sustainable products and empowers women.">
+  <title>FR | FAB-REC</title>
+
+  <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#0f3d2e">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&family=Playfair+Display:wght@700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <img src="images/logo.png" alt="FAB-REC Logo" class="brand-logo">
+      </a>
+
+      <div class="nav-links">
+        <a href="#home" class="t-home">Home</a>
+        <a href="#about" class="t-about-us">About Us</a>
+        <a href="#academy" class="t-academy">Academy</a>
+        <a href="#marketplace" class="t-marketplace">Marketplace</a>
+        <a href="#shop" class="t-shop">Shop</a>
+        <a href="#donate" class="t-donate">Donate</a>
+        <a href="#contact" class="t-contact">Contact</a>
+      </div>
+
+      <div class="nav-icons">
+        <button id="lang-toggle" class="icon-btn" title="Toggle Language">
+          <i class="fa-solid fa-globe"></i> <span id="current-lang">AR</span>
+        </button>
+        <button id="cart-toggle" class="icon-btn" title="Cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-count">0</span>
+        </button>
+        <div id="auth-controls" class="auth-controls">
+          <button id="sign-in-btn" class="btn btn-outline auth-btn">Sign In</button>
+          <button id="sign-up-btn" class="btn btn-secondary auth-btn">Sign Up</button>
+        </div>
+        <div id="user-menu" class="user-menu hidden">
+          <button id="user-menu-toggle" class="user-avatar" title="Account">
+            <span id="user-initials">U</span>
+          </button>
+          <div class="user-dropdown" id="user-dropdown">
+            <div class="user-info">
+              <div id="user-display-name">User</div>
+              <div id="user-email" class="user-email">user@example.com</div>
+            </div>
+            <button id="profile-link" class="dropdown-item">Profile</button>
+            <button id="logout-btn" class="dropdown-item">Logout</button>
+          </div>
+        </div>
+        <button id="mobile-menu-btn" class="icon-btn mobile-only">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Panel -->
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <!-- Cart Panel -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-panel" id="cart-panel">
+    <div class="cart-header">
+      <h2 class="t-cart-title">Your Cart</h2>
+      <button id="close-cart"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <!-- Cart items injected via JS -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span class="t-total">Total:</span>
+        <span id="cart-total-price">$0.00</span>
+      </div>
+      <button class="btn btn-primary t-checkout" onclick="openCheckoutModal()">Checkout</button>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <header id="home" class="hero section-spacing">
+    <div class="hero-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="container hero-content">
+      <h1 class="t-hero-title">We Create Art from Fabric Waste</h1>
+      <p class="t-hero-sub">We transform textile waste into sustainable products and create job opportunities for women
+        breadwinners.</p>
+      <div class="hero-buttons">
+        <button class="btn btn-primary t-shop-now"
+          onclick="document.getElementById('shop').scrollIntoView({behavior: 'smooth'})">Shop Now</button>
+        <button class="btn btn-outline t-join-acad"
+          onclick="document.getElementById('academy').scrollIntoView({behavior: 'smooth'})">Join the Academy</button>
+        <button class="btn btn-secondary t-donate-clothes" onclick="openDonateModal()">Donate Your Clothes</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mission Section -->
+  <section id="mission" class="mission section-spacing bg-beige">
+    <div class="container">
+      <h2 class="section-title t-our-mission">Our Mission</h2>
+      <div class="grid-3">
+        <div class="card mission-card">
+          <div class="card-icon"><i class="fa-solid fa-recycle"></i></div>
+          <h3 class="t-mission-1-title">Creative Recycling</h3>
+          <p class="t-mission-1-desc">We transform fabric waste into useful products.</p>
+        </div>
+        <div class="card mission-card">
+          <div class="card-icon"><i class="fa-solid fa-hands-holding-child"></i></div>
+          <h3 class="t-mission-2-title">Women Empowerment</h3>
+          <p class="t-mission-2-desc">We train women breadwinners in sewing and sustainable design.</p>
+        </div>
+        <div class="card mission-card">
+          <div class="card-icon"><i class="fa-solid fa-earth-americas"></i></div>
+          <h3 class="t-mission-3-title">Sustainability</h3>
+          <p class="t-mission-3-desc">We reduce waste and protect the environment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Impact Section -->
+  <section id="impact" class="impact section-spacing bg-dark-green text-white">
+    <div class="container">
+      <h2 class="section-title text-white t-impact-title">Our Impact So Far</h2>
+      <div class="grid-4 counter-grid" id="counter-section">
+        <div class="counter-card">
+          <div class="counter-number" data-target="4200">0</div>
+          <div class="counter-text t-impact-1">Recycled fabric pieces</div>
+        </div>
+        <div class="counter-card">
+          <div class="counter-number" data-target="156">0</div>
+          <div class="counter-text t-impact-2">Women trained</div>
+        </div>
+        <div class="counter-card">
+          <div class="counter-number" data-target="5800">0</div>
+          <div class="counter-text t-impact-3">Eco-friendly products</div>
+        </div>
+        <div class="counter-card">
+          <div class="counter-number" data-target="1240">0</div>
+          <div class="counter-text t-impact-4">Sales completed</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fabric Journey Section -->
+  <section id="journey" class="journey section-spacing">
+    <div class="container">
+      <h2 class="section-title t-journey-title">The Journey of a Fabric Piece</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon"><i class="fa-solid fa-truck-ramp-box"></i></div>
+          <div class="timeline-content t-journey-1">1. Collect used clothes</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon"><i class="fa-solid fa-layer-group"></i></div>
+          <div class="timeline-content t-journey-2">2. Fabric sorting</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon"><i class="fa-solid fa-soap"></i></div>
+          <div class="timeline-content t-journey-3">3. Cleaning and sterilization</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon"><i class="fa-solid fa-scissors"></i></div>
+          <div class="timeline-content t-journey-4">4. Redesign and production</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon"><i class="fa-solid fa-store"></i></div>
+          <div class="timeline-content t-journey-5">5. Selling the final product</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section id="shop" class="products section-spacing bg-beige">
+    <div class="container">
+      <h2 class="section-title t-products-title">Featured Products</h2>
+      <div class="filter-controls text-center mb-4" id="product-filters">
+        <button class="filter-btn active" data-filter="all"><span class="t-filter-all">All</span></button>
+        <button class="filter-btn" data-filter="bags"><span class="t-filter-bags">Bags</span></button>
+        <button class="filter-btn" data-filter="decor"><span class="t-filter-decor">Decor</span></button>
+        <button class="filter-btn" data-filter="materials"><span class="t-filter-materials">Materials</span></button>
+        <button class="filter-btn" data-filter="mdf"><span class="t-filter-mdf">MDF</span></button>
+      </div>
+      <div class="grid-3" id="product-grid">
+        <!-- Products injected via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Academy Section -->
+  <section id="academy" class="academy section-spacing">
+    <div class="container">
+      <h2 class="section-title t-academy-title">Academy Courses</h2>
+      <div class="grid-3">
+        <div class="card course-card">
+          <div class="course-header">
+            <h3 class="t-course-1-title">Craft Empowerment</h3>
+            <span class="badge"><i class="fa-solid fa-star"></i> 4.8</span>
+          </div>
+          <div class="course-meta">
+            <span><i class="fa-regular fa-clock"></i> <span class="t-course-1-duration">8 weeks</span></span>
+          </div>
+          <button class="btn btn-outline t-enroll" onclick="openAcademyModal('Craft Empowerment')">Enroll Now</button>
+        </div>
+        <div class="card course-card">
+          <div class="course-header">
+            <h3 class="t-course-2-title">Sustainable Design Diploma</h3>
+            <span class="badge"><i class="fa-solid fa-star"></i> 4.9</span>
+          </div>
+          <div class="course-meta">
+            <span><i class="fa-regular fa-clock"></i> <span class="t-course-2-duration">12 weeks</span></span>
+          </div>
+          <button class="btn btn-outline t-enroll" onclick="openAcademyModal('Sustainable Design Diploma')">Enroll
+            Now</button>
+        </div>
+        <div class="card course-card">
+          <div class="course-header">
+            <h3 class="t-course-3-title">Sewing Training for Women</h3>
+            <span class="badge"><i class="fa-solid fa-star"></i> 4.7</span>
+          </div>
+          <div class="course-meta">
+            <span><i class="fa-regular fa-clock"></i> <span class="t-course-3-duration">6 weeks</span></span>
+          </div>
+          <button class="btn btn-outline t-enroll" onclick="openAcademyModal('Sewing Training for Women')">Enroll
+            Now</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Transformation Section -->
+  <section class="transformation section-spacing bg-dark-green text-white">
+    <div class="container">
+      <h2 class="section-title text-white t-transform-title">From Waste to Art</h2>
+      <div class="transform-container">
+        <div class="transform-item">
+          <img src="https://images.unsplash.com/photo-1605600659908-0ef719419d41?auto=format&fit=crop&q=80&w=400"
+            alt="Fabric Waste" class="transform-img">
+          <h3 class="t-transform-before mt-3">Before: Fabric Waste</h3>
+        </div>
+        <div class="transform-arrow">
+          <i class="fa-solid fa-arrow-right-long desktop-arrow"></i>
+          <i class="fa-solid fa-arrow-down-long mobile-arrow"></i>
+        </div>
+        <div class="transform-item">
+          <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=400"
+            alt="Sustainable Bag" class="transform-img">
+          <h3 class="t-transform-after mt-3">After: Sustainable Bag</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Stories Section -->
+  <section id="about" class="success-stories section-spacing bg-beige">
+    <div class="container">
+      <h2 class="section-title t-success-title">Trainee Success Stories</h2>
+      <div class="grid-3">
+        <div class="card testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="t-test-1-text">“I learned a new skill and supported my family thanks to FAB-REC.”</p>
+          <div class="author t-test-1-author">- Samira Mohamed</div>
+        </div>
+        <div class="card testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="t-test-2-text">“After the training I started selling my own products in the marketplace.”</p>
+          <div class="author t-test-2-author">- Fatma Ahmed</div>
+        </div>
+        <div class="card testimonial-card">
+          <div class="stars">★★★★☆</div>
+          <p class="t-test-3-text">“FAB-REC workshops opened new opportunities for me.”</p>
+          <div class="author t-test-3-author">- Nadia Hassan</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About / Values Section -->
+  <section class="about-values section-spacing">
+    <div class="container">
+      <div class="about-content text-center mb-5">
+        <h2 class="section-title t-about-title">Our Story and Mission</h2>
+        <p class="t-about-1">FAB-REC is a pioneering Egyptian organization that combines environmental protection with
+          empowering women breadwinners.</p>
+        <p class="t-about-2">The idea started from a simple vision: turning textile waste from an environmental problem
+          into an economic opportunity.</p>
+        <p class="t-about-3">We work with women from underserved communities, train them in sewing and sustainable
+          design, and showcase their products in the trainee marketplace.</p>
+        <p class="t-about-4 font-bold">Every purchase supports a woman and reduces waste.</p>
+      </div>
+
+      <h2 class="section-title t-values-title mt-5">Our Values</h2>
+      <div class="grid-3">
+        <div class="card value-card">
+          <div class="icon"><i class="fa-solid fa-leaf"></i></div>
+          <h3 class="t-val-1-title">Sustainability</h3>
+          <p class="t-val-1-desc">We protect the environment through recycling.</p>
+        </div>
+        <div class="card value-card">
+          <div class="icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+          <h3 class="t-val-2-title">Empowerment</h3>
+          <p class="t-val-2-desc">We support women to build independent futures.</p>
+        </div>
+        <div class="card value-card">
+          <div class="icon"><i class="fa-solid fa-palette"></i></div>
+          <h3 class="t-val-3-title">Creativity</h3>
+          <p class="t-val-3-desc">We transform used fabric into art.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Donation CTA Section -->
+  <section id="donate" class="donate-cta bg-light-green text-white section-spacing text-center">
+    <div class="container">
+      <h2 class="t-join-title text-white">Join Our Journey</h2>
+      <p class="t-join-subtitle mb-4">Help us build a more sustainable future.</p>
+      <button class="btn btn-primary bg-dark-green t-btn-donate" onclick="openDonateModal()">Donate Your
+        Clothes</button>
+    </div>
+  </section>
+
+  <!-- Checkout Modal -->
+  <div class="modal-overlay" id="checkout-modal-overlay"></div>
+  <div class="modal-content card" id="checkout-modal">
+    <div class="modal-header">
+      <h2 class="t-checkout-title">Checkout</h2>
+      <button class="close-modal" onclick="closeCheckoutModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="payment-instruction">
+      <p class="t-instapay-inst text-center mb-3">To complete your order, please transfer the total amount using
+        InstaPay to the following number.</p>
+      <div class="instapay-box text-center mb-4">
+        <h3 class="t-instapay-number">InstaPay Number</h3>
+        <div class="copy-box">
+          <span id="instapay-target-1" class="font-bold text-dark-green" style="font-size: 1.2rem;">+20 106 405 5762</span>
+          <button class="btn-copy" onclick="copyInstaPay('instapay-target-1')"><i class="fa-regular fa-copy"></i> <span
+              class="t-copy-btn">Copy Number</span></button>
+        </div>
+      </div>
+    </div>
+    <form class="checkout-form" id="checkout-form" onsubmit="submitCheckout(event)">
+      <div class="grid-2" style="gap: 1rem;">
+        <div class="form-group">
+          <label class="t-form-name">Full Name</label>
+          <input type="text" id="chk-name" required>
+        </div>
+        <div class="form-group">
+          <label class="t-form-phone">Phone Number</label>
+          <input type="tel" id="chk-phone" required>
+        </div>
+        <div class="form-group">
+          <label class="t-form-address">Address</label>
+          <input type="text" id="chk-address" required>
+        </div>
+        <div class="form-group">
+          <label class="t-form-city">City</label>
+          <input type="text" id="chk-city" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="t-form-notes">Order Notes (optional)</label>
+        <input type="text" id="chk-notes">
+      </div>
+      <div class="form-group">
+        <label class="t-form-screenshot">Upload Payment Screenshot (JPG, PNG, PDF)</label>
+        <input type="file" id="chk-screenshot" accept=".jpg,.jpeg,.png,.pdf"
+          onchange="previewImage(this, 'chk-preview')">
+        <div class="image-preview" id="chk-preview"></div>
+      </div>
+      <button type="submit" class="btn btn-primary t-confirm-order w-100">Confirm Order</button>
+    </form>
+  </div>
+
+  <!-- Academy Registration Modal -->
+  <div class="modal-overlay" id="academy-modal-overlay"></div>
+  <div class="modal-content card" id="academy-modal">
+    <div class="modal-header">
+      <h2 class="t-academy-reg-title">Course Registration</h2>
+      <button class="close-modal" onclick="closeAcademyModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="payment-instruction">
+      <p class="t-academy-inst text-center mb-3">To confirm your registration, please transfer the course fee via
+        InstaPay.</p>
+      <div class="instapay-box text-center mb-4">
+        <h3 class="t-instapay-number">InstaPay Number</h3>
+        <div class="copy-box">
+          <span id="instapay-target-2" class="font-bold text-dark-green" style="font-size: 1.2rem;">+20 106 405 5762</span>
+          <button class="btn-copy" onclick="copyInstaPay('instapay-target-2')"><i class="fa-regular fa-copy"></i> <span
+              class="t-copy-btn">Copy Number</span></button>
+        </div>
+      </div>
+    </div>
+    <form class="academy-form" id="academy-form" onsubmit="submitAcademy(event)">
+      <input type="hidden" id="acad-course-name">
+      <div class="grid-2" style="gap: 1rem;">
+        <div class="form-group">
+          <label class="t-form-name">Full Name</label>
+          <input type="text" id="acad-name" required>
+        </div>
+        <div class="form-group">
+          <label class="t-form-phone">Phone Number</label>
+          <input type="tel" id="acad-phone" required>
+        </div>
+        <div class="form-group">
+          <label class="t-form-email">Email Address</label>
+          <input type="email" id="acad-email" required>
+        </div>
+        <div class="form-group">
+          <label class="t-form-city">City</label>
+          <input type="text" id="acad-city" required>
+        </div>
+        <div class="form-group">
+          <label class="t-form-age">Age</label>
+          <input type="number" id="acad-age" required>
+        </div>
+        <div class="form-group">
+          <label class="t-form-edu">Education Level</label>
+          <input type="text" id="acad-edu" required>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top: 1rem;">
+        <label class="t-form-sewing">Do you have sewing experience?</label>
+        <select id="acad-sewing" required>
+          <option value="Yes" class="t-yes">Yes</option>
+          <option value="No" class="t-no">No</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="t-form-motivation">Why do you want to join this diploma?</label>
+        <input type="text" id="acad-motivation" required>
+      </div>
+      <div class="form-group">
+        <label class="t-form-screenshot">Upload Payment Screenshot</label>
+        <input type="file" id="acad-screenshot" accept=".jpg,.jpeg,.png,.pdf"
+          onchange="previewImage(this, 'acad-preview')">
+        <div class="image-preview" id="acad-preview"></div>
+      </div>
+      <button type="submit" class="btn btn-primary t-confirm-reg w-100">Confirm Registration</button>
+    </form>
+  </div>
+
+  <!-- Donation Modal -->
+  <div class="modal-overlay" id="donate-modal-overlay"></div>
+  <div class="modal-content card" id="donate-modal">
+    <div class="modal-header">
+      <h2 class="t-btn-donate">Donate Your Clothes</h2>
+      <button class="close-modal" onclick="closeDonateModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="payment-instruction">
+      <p class="t-donate-inst text-center mb-3">Please fill this form and you will follow up via WhatsApp on the
+        following number.</p>
+      <div class="instapay-box text-center mb-4">
+        <h3 class="t-wa-number">WhatsApp Number</h3>
+        <div class="copy-box">
+          <span id="donate-wa-target" class="font-bold text-dark-green" style="font-size: 1.2rem;">+20 106 405 5762</span>
+          <button class="btn-copy" onclick="copyInstaPay('donate-wa-target')"><i class="fa-regular fa-copy"></i> <span
+              class="t-copy-btn">Copy Number</span></button>
+        </div>
+      </div>
+    </div>
+    <form class="donation-form" id="donate-form" onsubmit="submitDonation(event)">
+      <div class="form-group">
+        <label class="t-form-name">Name</label>
+        <input type="text" id="don-name" required>
+      </div>
+      <div class="form-group">
+        <label class="t-form-phone">Phone</label>
+        <input type="tel" id="don-phone" required>
+      </div>
+      <div class="form-group">
+        <label class="t-form-address">Address</label>
+        <input type="text" id="don-address" required>
+      </div>
+      <div class="form-group">
+        <label class="t-form-type">Type of clothes</label>
+        <select id="don-type" required>
+          <option value="tops" class="t-tops">Tops / Shirts</option>
+          <option value="bottoms" class="t-bottoms">Bottoms / Pants</option>
+          <option value="mixed" class="t-mixed">Mixed</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="t-form-date">Pickup date</label>
+        <input type="date" id="don-date" required>
+      </div>
+      <button type="submit" class="btn btn-primary t-submit w-100">Submit</button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer id="contact" class="footer bg-dark-green text-white">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3><img src="images/logo.png" alt="FAB-REC Logo" class="footer-logo"></h3>
+          <p class="t-footer-desc">Sustainable Future & Women Empowerment</p>
+        </div>
+        <div class="footer-col">
+          <h4 class="t-quick-links">Quick Links</h4>
+          <ul>
+            <li><a href="#shop" class="t-shop">Shop</a></li>
+            <li><a href="#academy" class="t-academy">Academy</a></li>
+            <li><a href="#donate" class="t-donate">Donate</a></li>
+            <li><a href="#about" class="t-about-us">About</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="t-contact">Contact</h4>
+          <ul>
+            <li><i class="fa-brands fa-whatsapp"></i> +20 106 405 5762 </li>
+            <li><i class="fa-regular fa-envelope"></i> info@fab-rec.com</li>
+            <li><i class="fa-solid fa-location-dot"></i> <span class="t-location">Egypt</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span class="t-copyright">FAB-REC 2026. All rights reserved.</span></p>
+        <p class="mt-3" style="color: #6ee7b7; font-size: 0.9rem;"><span class="t-made-by">Made by</span> Abdelazim Gad &amp; Abdullah Ashraf &nbsp;|&nbsp; <i class="fa-brands fa-whatsapp"></i> 01064055762</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Product Detail Modal -->
+  <div class="modal-overlay hidden" id="auth-modal-overlay"></div>
+  <div class="modal-content card auth-modal hidden" id="auth-modal">
+    <div class="modal-header">
+      <h2>Account Access</h2>
+      <button class="close-modal" id="close-auth-modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="auth-tabs">
+      <button class="tab-btn active" data-tab="signin-panel">Sign In</button>
+      <button class="tab-btn" data-tab="signup-panel">Sign Up</button>
+    </div>
+    <div class="auth-tab-panel active" id="signin-panel">
+      <button class="btn btn-outline w-100 mb-2" id="google-signin-btn"><i class="fab fa-google"></i> Continue with Google</button>
+      <button class="btn btn-secondary w-100 mb-2" id="phone-signin-btn"><i class="fa-solid fa-phone"></i> Continue with Phone Number</button>
+      <div class="divider"><span>or</span></div>
+      <form id="signin-form" class="auth-form">
+        <div class="form-group">
+          <label for="signin-email">Email Address</label>
+          <input type="email" id="signin-email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="signin-password">Password</label>
+          <input type="password" id="signin-password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Sign In with Email</button>
+      </form>
+      <button class="btn btn-link ghost w-100 mt-3" id="continue-guest-btn">Continue as Guest</button>
+    </div>
+    <div class="auth-tab-panel" id="signup-panel">
+      <button class="btn btn-outline w-100 mb-2" id="google-signup-btn"><i class="fab fa-google"></i> Continue with Google</button>
+      <button class="btn btn-secondary w-100 mb-2" id="phone-signup-btn"><i class="fa-solid fa-phone"></i> Continue with Phone Number</button>
+      <div class="divider"><span>or</span></div>
+      <form id="signup-form" class="auth-form">
+        <div class="form-group">
+          <label for="signup-fullname">Full Name</label>
+          <input type="text" id="signup-fullname" placeholder="Enter your full name" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email Address</label>
+          <input type="email" id="signup-email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="Create a password" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Create Account</button>
+      </form>
+    </div>
+    <div class="auth-phone-panel hidden" id="phone-auth-panel">
+      <div class="form-group hidden" id="phone-fullname-group">
+        <label for="phone-fullname-input">Full Name</label>
+        <input type="text" id="phone-fullname-input" placeholder="Enter your full name">
+      </div>
+      <div class="form-group">
+        <label for="phone-number-input">Phone Number</label>
+        <input type="tel" id="phone-number-input" placeholder="e.g. +201234567890" required>
+      </div>
+      <button class="btn btn-primary w-100 mb-2" id="send-otp-btn">Send OTP</button>
+      <div class="form-group hidden" id="otp-section">
+        <label for="otp-code-input">OTP Code</label>
+        <input type="text" id="otp-code-input" placeholder="Enter OTP" required>
+      </div>
+      <button class="btn btn-secondary w-100 hidden" id="verify-otp-btn">Verify OTP</button>
+      <button class="btn btn-link ghost w-100 mt-2" id="cancel-phone-auth-btn">Cancel</button>
+      <div id="recaptcha-container"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay hidden" id="complete-profile-overlay"></div>
+  <div class="modal-content card auth-modal hidden" id="complete-profile-modal">
+    <div class="modal-header">
+      <h2>Complete Your Profile</h2>
+      <button class="close-modal" id="close-complete-profile-modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="complete-profile-form" class="auth-form">
+      <div class="form-group">
+        <label for="complete-fullname">Full Name</label>
+        <input type="text" id="complete-fullname" placeholder="Enter your full name" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Save Profile</button>
+    </form>
+  </div>
+
+  <div class="modal-overlay hidden" id="profile-modal-overlay"></div>
+  <div class="modal-content card auth-modal hidden" id="profile-modal">
+    <div class="modal-header">
+      <h2>Your Profile</h2>
+      <button class="close-modal" id="close-profile-modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="profile-details">
+      <div class="profile-row"><strong>Name:</strong> <span id="profile-name-text"></span></div>
+      <div class="profile-row"><strong>Email:</strong> <span id="profile-email-text"></span></div>
+      <div class="profile-row"><strong>Phone:</strong> <span id="profile-phone-text"></span></div>
+      <div class="profile-row"><strong>Provider:</strong> <span id="profile-provider-text"></span></div>
+      <div class="profile-row"><strong>Member since:</strong> <span id="profile-created-text"></span></div>
+      <button class="btn btn-secondary w-100 mt-3" id="logout-btn-2">Logout</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="product-modal-overlay" onclick="closeProductModal()"></div>
+  <div class="product-detail-modal" id="product-detail-modal">
+    <button class="pdm-close" onclick="closeProductModal()" id="pdm-close-btn">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <!-- Image Side -->
+    <div class="pdm-image-side">
+      <img id="pdm-image" src="" alt="" class="pdm-img">
+      <div class="pdm-handmade-badge">
+        <i class="fa-solid fa-hands"></i>
+        <span class="t-pdm-handmade">🇪🇬 Egyptian Handmade</span>
+      </div>
+    </div>
+    <!-- Details Side -->
+    <div class="pdm-info-side">
+      <span class="pdm-category-tag" id="pdm-category"></span>
+      <h2 class="pdm-name" id="pdm-name"></h2>
+      <div class="pdm-divider"></div>
+      <p class="pdm-desc" id="pdm-desc"></p>
+      <div class="pdm-price" id="pdm-price"></div>
+      <div class="pdm-guarantees">
+        <span><i class="fa-solid fa-leaf"></i> <span class="t-pdm-eco">Eco-friendly</span></span>
+        <span><i class="fa-solid fa-hands-holding-heart"></i> <span class="t-pdm-women">Women Empowered</span></span>
+        <span><i class="fa-solid fa-shield-check"></i> <span class="t-pdm-quality">Quality Guaranteed</span></span>
+      </div>
+      <div class="pdm-actions">
+        <button class="btn btn-primary" id="pdm-add-cart-btn" onclick="addToCartFromModal()">
+          <i class="fa-solid fa-cart-plus"></i> <span class="t-add-to-cart">Add to Cart</span>
+        </button>
+        <button class="btn-whatsapp" onclick="orderViaWhatsApp()">
+          <i class="fa-brands fa-whatsapp"></i> <span class="t-order-whatsapp">Order via WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
